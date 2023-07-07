@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Anime Data Display</title>
+    <style>
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-gap: 20px;
+            padding: 20px;
+        }
+
+        .grid-item {
+            text-align: center;
+        }
+
+        .grid-item img {
+            width: 100px;
+            height: 140px;
+        }
+
+        .grid-item a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .grid-item a:hover {
+            text-decoration: underline;
+        }
+
+        .grid-item .name {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    
+        
+            <div class="grid-container">
+                {% for item in animes %}
+                <form style="width: 100%;" id="animeForm" action="/graph/{{ item.name }}{{ loop.index }}" method="post">
+                    <div class="grid-item">
+                        <input type="hidden" name="name[]" value="{{ item.name }}">
+                        <input type="hidden" name="link[]" value="{{ item.link }}">
+                        <input type="hidden" name="image[]" value="{{ item.image }}">
+                        <input type="image" alt="Submit" src="{{ item.image }}" alt="{{ item.name }}"/>
+                        <div class="name">{{ item.name }}</div>
+                    </div>
+                </form>
+                {% endfor %}
+            </div>
+        
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Character Favorites Graph</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+    <style>
+        .graph-container {
+            width: 95%; /* Set the desired width of the graph container */
+            overflow-x: auto; /* Enable horizontal scrolling */
+        }
+    </style>
+</head>
+<body>
+    <div class="graph-container">
+        <canvas id="graphCanvas"></canvas>
+    </div>
+    <script>
+        const charNames = {{ char_names|safe }};
+        const charFavorites = {{ char_favorites|safe }};
+
+        const ctx = document.getElementById('graphCanvas').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: charNames,
+                datasets: [{
+                    label: 'Number of Favorites',
+                    data: charFavorites,
+                    backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: '{{ anime_name }}',
+                        font: {
+                            size: 15,
+                            weight: 'bold'
+                        }
+                    },
+                    zoom: {
+                        pan: {
+                            enabled: true,
+                            mode: 'x',
+                            speed: 10,
+                            threshold: 10
+                        },
+                        zoom: {
+                            wheel: {
+                                enabled: true
+                            },
+                            drag: {
+                                enabled: true
+                            },
+                            pinch: {
+                                enabled: true
+                            },
+                            mode: 'x',
+                            speed: 0.1,
+                            threshold: 2,
+                            sensitivity: 3
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
