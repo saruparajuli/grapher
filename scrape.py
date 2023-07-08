@@ -5,7 +5,7 @@ import json
 from flask_caching import Cache
 
 config = {
-    "DEBUG": False,          # some Flask specific configs
+    "DEBUG": True,          # some Flask specific configs
     "CACHE_TYPE": "SimpleCache",  # Flask-Caching related configs
     "CACHE_DEFAULT_TIMEOUT": 300
 }
@@ -20,14 +20,14 @@ def index():
 
 @app.route('/graph/<anime_name>', methods=['GET', 'POST'])
 def graph(anime_name):
-    anime_name = request.form['name[]']
-    anime_url = request.form['link[]']
-    characters = scrape_characters(anime_url)
+    code = anime_name.split('_=')[1]
+    name = anime_name.split('_=')[0]
+    characters = scrape_characters(f'https://myanimelist.net/anime/{code}/{name}/characters')
     characters = sorted(characters, key=lambda d: d['name'])
     char_names = [char['name'] for char in characters]
     char_favorites = [char['favorites'] for char in characters]
 
-    return render_template('graph.html', anime_name=anime_name, char_names=json.dumps(char_names), char_favorites=json.dumps(char_favorites))
+    return render_template('graph.html', anime_name=name, char_names=json.dumps(char_names), char_favorites=json.dumps(char_favorites))
 
 @app.route('/search/<anime_name>', methods=['GET','POST'])
 @cache.cached(timeout=60*60)
@@ -44,12 +44,14 @@ def get_urls(anime_name):
             image = result.find('img')['data-srcset'].strip().split('x, ')[1].replace(' 2x', '')
             name = result.find('img')['alt']
             link = result['href']
+            code = link.strip().split('/')[-2]
         except:
             print(result)
         animes.append({
             'name': name,
             'image': image,
-            'link': link
+            'link': link,
+            'code': code
         })
     return render_template('search.html', animes=animes)
 
@@ -62,7 +64,6 @@ def scrape_characters(anime_url):
     results = soup.find_all(class_='js-anime-character-table')
     for result in results:
         char_name = result.find(class_='h3_character_name').text
-        print(char_name)
         char_favorites = result.find_all(class_='spaceit_pad')
         for char in char_favorites:
             if 'Favorites' in char.text:

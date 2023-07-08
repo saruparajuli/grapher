@@ -39,7 +39,7 @@
         
             <div class="grid-container">
                 {% for item in animes %}
-                <form style="width: 100%;" id="animeForm" action="/graph/{{ item.name }}{{ loop.index }}" method="post">
+                <form style="width: 100%;" id="animeForm" action="/graph/{{ item.name }}_={{ item.code }}" method="post">
                     <div class="grid-item">
                         <input type="hidden" name="name[]" value="{{ item.name }}">
                         <input type="hidden" name="link[]" value="{{ item.link }}">
