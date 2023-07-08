@@ -64,9 +64,9 @@
 <body>
     <h1>Anime Character Graph</h1>
     <form onsubmit="window.location.href = '/search/' + anime_name.value; return false;">
-        <label for="anime_name">Enter Anime Name:</label>
-        <input type="text" name="anime_name" id="anime_name" required>
-        <button type="submit">Search Anime</button>
+        <label for="anime_name" style="font-size: 20px;">Enter Anime Name:</label>
+        <input type="text" name="anime_name" id="anime_name" style="font-size: 20px;" required>
+        <button type="submit" style="font-size: 20px;">Search Anime</button>
     </form>
     {% block content %}{% endblock %}
 </body>
