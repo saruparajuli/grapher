@@ -3,7 +3,7 @@
 {% block content %}
             <div class="grid-container">
                 {% for item in animes %}
-                <form style="width: 100%;" id="animeForm" action="/graph/{{ item.name }}_={{ item.code }}" method="post">
+                <form style="width: 100%;" id="animeForm" action="/graph/{{ item.encoded }}_={{ item.code }}" method="post">
                     <div class="loading-overlay" id="overlay" style="display: none;"></div><div class="loading-spinner" id="spinner" style="display: none;"></div>
                     <div class="grid-item">
                         <input type="hidden" name="name[]" value="{{ item.name }}">

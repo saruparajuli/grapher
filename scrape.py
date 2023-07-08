@@ -21,6 +21,7 @@ def index():
 @app.route('/graph/<anime_name>', methods=['GET', 'POST'])
 @cache.cached(timeout=60*60)
 def graph(anime_name):
+    print(anime_name)
     code = anime_name.split('_=')[1]
     name = anime_name.split('_=')[0]
     characters = scrape_characters(f'https://myanimelist.net/anime/{code}/{name}/characters')
@@ -43,7 +44,7 @@ def get_urls(anime_name):
         result = result.find(class_='hoverinfo_trigger')
         try:
             image = result.find('img')['data-srcset'].strip().split('x, ')[1].replace(' 2x', '')
-            name = result.find('img')['alt']
+            name = result.find('img')['alt'].replace('?','')
             link = result['href']
             code = link.strip().split('/')[-2]
         except:
