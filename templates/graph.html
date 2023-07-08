@@ -2,7 +2,9 @@
 {% block content %}
     <div class="graph-container">
         <canvas id="graphCanvas"></canvas>
+        
     </div>
+    <p class="info">Drag, Pinch, Zoom to interact.</p>
     <script>
         const charNames = {{ char_names|safe }};
         const charFavorites = {{ char_favorites|safe }};
