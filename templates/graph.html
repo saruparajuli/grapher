@@ -12,8 +12,7 @@
             overflow-x: auto; /* Enable horizontal scrolling */
         }
 	canvas {
-	    width: 100%;
-	    min-height: 100vh;
+	    height: 85vh;
 	}
     @media (max-width: 767px) {
         h1 {
@@ -24,10 +23,6 @@
             font-size: 18px;
         }
         
-        .graph-container canvas {
-            width: 100%;
-            height: 300px; /* Adjust the height as per your preference */
-        }
 
         .graph-container .chartjs-size-monitor-shrink,
             .graph-container .chartjs-size-monitor-expand {
@@ -54,13 +49,20 @@
                     data: charFavorites,
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
                     borderColor: 'rgba(54, 162, 235, 1)',
-                    borderWidth: 1
+                    borderWidth: 1,
                 }]
             },
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 plugins: {
+                    legend: {
+                        labels: {
+                            font: {
+                                size: 25
+                            }
+                        }
+                    },
                     title: {
                         display: true,
                         text: '{{ anime_name }}',
@@ -80,9 +82,6 @@
                             wheel: {
                                 enabled: true
                             },
-                            drag: {
-                                enabled: true
-                            },
                             pinch: {
                                 enabled: true,
                                 mode: 'xy',
@@ -95,13 +94,32 @@
                             mode: 'x',
                             speed: 0.1,
                             threshold: 2,
-                            sensitivity: 3
+                            sensitivity: 3,
+                            // Set initial zoom level
+                            zoomRange: {
+                                min: 0,
+                                max: 0.5
+                            }
                         }
                     }
                 },
                 scales: {
                     y: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {
+                            font: {
+                                size: 20,
+                            }
+                        }
+                    },
+                    x: {
+                        min: charNames[0],  // Set the minimum value to the first label
+                        max: charNames[35],   // Set the maximum value to the fifth label
+                        ticks: {
+                            font: {
+                                size: 20,
+                            }
+                        }
                     }
                 }
             }
