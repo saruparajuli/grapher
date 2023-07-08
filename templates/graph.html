@@ -1,37 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Character Favorites Graph</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
-
-    <style>
-        .graph-container {
-            width: 100%; /* Set the desired width of the graph container */
-            overflow-x: auto; /* Enable horizontal scrolling */
-        }
-	canvas {
-	    height: 85vh;
-	}
-    @media (max-width: 767px) {
-        h1 {
-            font-size: 24px;
-        }
-        
-        h2 {
-            font-size: 18px;
-        }
-        
-
-        .graph-container .chartjs-size-monitor-shrink,
-            .graph-container .chartjs-size-monitor-expand {
-                font-size: 14px; /* Increase the font size of x-axis labels */
-            }
-    }
-    </style>
-</head>
-<body>
+{% extends "index.html" %}
+{% block content %}
     <div class="graph-container">
         <canvas id="graphCanvas"></canvas>
     </div>
@@ -59,7 +27,7 @@
                     legend: {
                         labels: {
                             font: {
-                                size: 25
+                                size: 15
                             }
                         }
                     },
@@ -125,5 +93,4 @@
             }
         });
     </script>
-</body>
-</html>
+{% endblock %}

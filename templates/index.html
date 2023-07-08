@@ -1,15 +1,74 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Anime Character Graph</title>
+    <title>Character Favorites Graph</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom"></script>
+
+    <style>
+        .graph-container {
+            width: 100%; /* Set the desired width of the graph container */
+            overflow-x: auto; /* Enable horizontal scrolling */
+        }
+	canvas {
+	    height: 80vh;
+	}
+    @media (max-width: 767px) {
+        h1 {
+            font-size: 15px;
+        }
+        
+        h2 {
+            font-size: 18px;
+        }
+        
+
+        .graph-container .chartjs-size-monitor-shrink,
+            .graph-container .chartjs-size-monitor-expand {
+                font-size: 14px; /* Increase the font size of x-axis labels */
+            }
+    }
+
+    .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-gap: 20px;
+            padding: 20px;
+        }
+
+        .grid-item {
+            text-align: center;
+        }
+
+        .grid-item img {
+            width: 100px;
+            height: 140px;
+        }
+
+        .grid-item a {
+            text-decoration: none;
+            color: #000;
+        }
+
+        .grid-item a:hover {
+            text-decoration: underline;
+        }
+
+        .grid-item .name {
+            margin-top: 10px;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
     <h1>Anime Character Graph</h1>
-    <form onsubmit="window.location = 'search/' + anime_name.value; return false;">
+    <form onsubmit="window.location.href = '/search/' + anime_name.value; return false;">
         <label for="anime_name">Enter Anime Name:</label>
         <input type="text" name="anime_name" id="anime_name" required>
         <button type="submit">Search Anime</button>
     </form>
+    {% block content %}{% endblock %}
 </body>
 
 <style>
