@@ -1,15 +1,38 @@
 {% extends "index.html" %}
 {% block content %}
+<style>
+    .aa:hover .coupontooltip {
+    display: block;
+    
+}
+
+
+.coupontooltip {
+    display: none;
+    background: #C8C8C8;
+    opacity: 0.5;
+    margin-left: 28px;
+    padding: 10px;
+    position: absolute;
+    z-index: 1000;
+}
+</style>
+
+
+<div class="aa">
+    <span class="coupontooltip">Interact - Pinch, Drag</span>
     <div class="graph-container">
         <canvas id="graphCanvas"></canvas>
         
     </div>
-    <p class="info" style="font-size: 25px;">Drag, Pinch, Zoom to interact.</p>
+</div>
+    
     <script>
         const charNames = {{ char_names|safe }};
         const charFavorites = {{ char_favorites|safe }};
 
         const ctx = document.getElementById('graphCanvas').getContext('2d');
+       
         new Chart(ctx, {
             type: 'bar',
             data: {
@@ -95,4 +118,18 @@
             }
         });
     </script>
+
+<script>
+    var tooltip = document.querySelectorAll('.coupontooltip');
+
+    document.addEventListener('mousemove', fn, false);
+
+    function fn(e) {
+        for (var i=tooltip.length; i--;) {
+            tooltip[i].style.left = e.pageX + 'px';
+            tooltip[i].style.top = e.pageY + 'px';
+            console.log(tooltip[i].style.left)
+        }
+    }
+</script>
 {% endblock %}
