@@ -19,6 +19,7 @@ def index():
     return render_template('index.html')
 
 @app.route('/graph/<anime_name>', methods=['GET', 'POST'])
+@cache.cached(timeout=60*60)
 def graph(anime_name):
     code = anime_name.split('_=')[1]
     name = anime_name.split('_=')[0]
