@@ -23,15 +23,15 @@ def index():
 def graph(anime_name):
     anime_name = unquote(anime_name)
     code = anime_name.split('_=')[1]
-    name = request.form['name[]']
-    nameAppend = name.replace('?','')
-    print(f'https://myanimelist.net/anime/{code}/{nameAppend}/characters')
-    characters = scrape_characters(f'https://myanimelist.net/anime/{code}/{nameAppend}/characters')
+    name = anime_name.split('_=')[0].replace('?','')
+    print(anime_name)
+    print(f'https://myanimelist.net/anime/{code}/{name}/characters')
+    (characters, title) = scrape_characters(f'https://myanimelist.net/anime/{code}/{name}/characters')
     characters = sorted(characters, key=lambda d: d['name'])
     char_names = [char['name'] for char in characters]
     char_favorites = [char['favorites'] for char in characters]
 
-    return render_template('graph.html', anime_name=name, char_names=json.dumps(char_names), char_favorites=json.dumps(char_favorites))
+    return render_template('graph.html', anime_name=title, char_names=json.dumps(char_names), char_favorites=json.dumps(char_favorites))
 
 @app.route('/search/<anime_name>', methods=['GET','POST'])
 @cache.cached(timeout=60*60)
@@ -78,8 +78,8 @@ def scrape_characters(anime_url):
             'name': char_name,
             'favorites': int(char_favorite)
         })
-
-    return characters
+    title = soup.find('h1', class_='title-name h1_bold_none').find('strong').text
+    return (characters, title)
 
 
 if __name__ == '__main__':
