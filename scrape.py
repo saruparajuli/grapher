@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import requests
 import json
 from flask_caching import Cache
+from urllib.parse import quote, unquote
 
 config = {
     "DEBUG": True,          # some Flask specific configs
@@ -13,7 +14,6 @@ config = {
 app = Flask(__name__)
 app.config.from_mapping(config)
 cache = Cache(app)
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -21,9 +21,10 @@ def index():
 @app.route('/graph/<anime_name>', methods=['GET', 'POST'])
 @cache.cached(timeout=60*60)
 def graph(anime_name):
-    print(anime_name)
+    anime_name = unquote(anime_name)
     code = anime_name.split('_=')[1]
-    name = anime_name.split('_=')[0]
+    
+    name = request.form['name[]']
     characters = scrape_characters(f'https://myanimelist.net/anime/{code}/{name}/characters')
     characters = sorted(characters, key=lambda d: d['name'])
     char_names = [char['name'] for char in characters]
@@ -44,8 +45,10 @@ def get_urls(anime_name):
         result = result.find(class_='hoverinfo_trigger')
         try:
             image = result.find('img')['data-srcset'].strip().split('x, ')[1].replace(' 2x', '')
-            name = result.find('img')['alt'].replace('?','')
+            name = result.find('img')['alt']
             link = result['href']
+            custom_link = quote(result.find('img')['alt'].replace('/', ''),'safe')
+            print(custom_link)
             code = link.strip().split('/')[-2]
         except:
             print(result)
@@ -53,7 +56,8 @@ def get_urls(anime_name):
             'name': name,
             'image': image,
             'link': link,
-            'code': code
+            'code': code,
+            'custom_link': custom_link
         })
     return render_template('search.html', animes=animes)
 
