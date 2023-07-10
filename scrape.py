@@ -23,9 +23,10 @@ def index():
 def graph(anime_name):
     anime_name = unquote(anime_name)
     code = anime_name.split('_=')[1]
-    
     name = request.form['name[]']
-    characters = scrape_characters(f'https://myanimelist.net/anime/{code}/{name}/characters')
+    nameAppend = name.replace('?','')
+    print(f'https://myanimelist.net/anime/{code}/{nameAppend}/characters')
+    characters = scrape_characters(f'https://myanimelist.net/anime/{code}/{nameAppend}/characters')
     characters = sorted(characters, key=lambda d: d['name'])
     char_names = [char['name'] for char in characters]
     char_favorites = [char['favorites'] for char in characters]
@@ -47,8 +48,7 @@ def get_urls(anime_name):
             image = result.find('img')['data-srcset'].strip().split('x, ')[1].replace(' 2x', '')
             name = result.find('img')['alt']
             link = result['href']
-            custom_link = quote(result.find('img')['alt'].replace('/', ''),'safe')
-            print(custom_link)
+            custom_link = quote(result.find('img')['alt'].replace('/', ''))
             code = link.strip().split('/')[-2]
         except:
             print(result)
